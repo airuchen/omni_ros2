@@ -12,6 +12,7 @@ def generate_launch_description():
     # assert hardware_config.is_file()
 
     return LaunchDescription([
+        SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'),
         Node(
             package='ydlidar',
             node_executable='ydlidar_node',
