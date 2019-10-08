@@ -31,49 +31,49 @@ def generate_launch_description():
         ]
     )
     start_map_server_cmd = launch_ros.actions.Node(
-        node_name='map_server',
+        # node_name='map_server',
         package='nav2_map_server',
         node_executable='map_server',
         output='screen',
         parameters=[nav2_yaml,{'yaml_filename':str(map_yaml_filename)}]
     )
     start_amcl_cmd = launch_ros.actions.Node(
-        node_name='amcl',
+        # node_name='amcl',
         package='nav2_amcl',
         node_executable='amcl',
         output='screen',
         parameters=[nav2_yaml]
     )
     start_world_model_cmd = launch_ros.actions.Node(
-        node_name='world_model',
+        # node_name='world_model',
         package='nav2_world_model',
         node_executable='world_model',
         output='screen',
         parameters=[nav2_yaml]
     )
     start_dwb_cmd = launch_ros.actions.Node(
-        node_name='dwb_controller',
+        # node_name='dwb_controller',
         package='dwb_controller',
         node_executable='dwb_controller',
         output='screen',
         parameters=[nav2_yaml]
     )
     start_planner_cmd = launch_ros.actions.Node(
-        node_name='navfn_planner',
+        # node_name='navfn_planner',
         package='nav2_navfn_planner',
         node_executable='navfn_planner',
         output='screen',
         parameters=[nav2_yaml]
     )
     start_navigator_cmd = launch_ros.actions.Node(
-        node_name='bt_navigator',
+        # node_name='bt_navigator',
         package='nav2_bt_navigator',
         node_executable='bt_navigator',
         output='screen',
         parameters=[nav2_yaml, {'bt_xml_filename':str(bt_xml_path)}]
     )
     start_recovery_cmd = launch_ros.actions.Node(
-        node_name='recoveries_node',
+        # node_name='recoveries_node',
         package='nav2_recoveries',
         node_executable='recoveries_node',
         output='screen',

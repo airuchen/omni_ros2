@@ -14,7 +14,7 @@ def generate_launch_description():
 
     return LaunchDescription([
     SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'),
-    # todo: add robot_state_publisher, but why do they add this for the second time?
+    # todo: add robot_state_publisher
     # Node(
     #     package='robot_state_publisher', node_executable='robot_state_publisher', output='screen', argument=[str(urdf)], parameters=[presence_config]
     #     ),
@@ -23,7 +23,7 @@ def generate_launch_description():
         node_executable='se_node',
         output='screen',
         parameters=[presence_config],
-        remappings=[('odometry/filtered', 'odom')]
+        remappings=[('odometry/filtered', 'base_odom')]     # remapping filtered odom to base_odom
         ),
     ])
     

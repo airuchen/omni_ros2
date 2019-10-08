@@ -74,9 +74,9 @@ dwb_controller:
     decel_lim_x:  -3.0
     decel_lim_y:  -3.0
     decel_lim_theta: -2.5
-    vx_samples: 20 
-    vy_samples: 20
-    vtheta_samples: 40 
+    vx_samples: 10 # 20 
+    vy_samples: 10 # 20
+    vtheta_samples: 20 # 40 
     sim_time:  0.7
     linear_granularity: 0.05
     xy_goal_tolerance:  0.25
