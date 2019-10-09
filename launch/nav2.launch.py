@@ -79,6 +79,13 @@ def generate_launch_description():
         output='screen',
         parameters=[nav2_yaml]
     )
+    # transform base_odom to odom allows recoveries to find location.
+    start_odom_tf = launch_ros.actions.Node(
+            package='tf2_ros',
+            node_executalbe='static_transform_publisher', 
+            output='screen',
+            arguments=['0', '0', '0', '0', '0', '0', 'base_odom', 'odom']
+    )
    
     # create the launch description and populate
     ld = launch.LaunchDescription()
@@ -93,6 +100,7 @@ def generate_launch_description():
     ld.add_action(start_dwb_cmd )
     ld.add_action(start_planner_cmd )
     ld.add_action(start_navigator_cmd )
+    ld.add_action(start_odom_tf)
     ld.add_action(start_recovery_cmd )
 
     return ld
