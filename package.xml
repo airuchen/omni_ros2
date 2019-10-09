@@ -3,7 +3,7 @@
 <package format="3">
   <name>omni_ros2</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Omni bot operates on ROS2</description>
   <maintainer email="iven.chen@adlinktech.com">ros</maintainer>
   <license>TODO: License declaration</license>
 
@@ -13,8 +13,34 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
 
+  <!-- for describing the robot's tf infor -->
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>urdf</exec_depend>
+
+  <!-- for Rviz -->
+  <exec_depend>rviz2</exec_depend>
+
+  <!-- for hardware -->
+  <exec_depend>ydlidar</exec_depend>
+
   <!--for sensor fusion -->
   <exec_depend>robot_locaolization</exec_depend>
+
+  <!-- for SLAM -->
+  <exec_depend>cartographer_ros</exec_depend>
+
+  <!-- for navigation2 -->
+  <exec_depend>nav2_map_server</exec_depend>
+  <exec_depend>nav2_behavior_tree</exec_depend>
+  <exec_depend>nav2_amcl</exec_depend>
+  <exec_depend>nav2_world_model</exec_depend>
+  <exec_depend>nav2_dwb_controller</exec_depend>
+  <exec_depend>nav2_navfn_planner</exec_depend>
+  <exec_depend>nav2_bt_navigator</exec_depend>
+  <exec_depend>nav2_recoveries</exec_depend>
+  <exec_depend>nav2_lifecycle_manager</exec_depend>
+
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
