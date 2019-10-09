@@ -25,7 +25,7 @@
   <exec_depend>ydlidar</exec_depend>
 
   <!--for sensor fusion -->
-  <exec_depend>robot_locaolization</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
 
   <!-- for SLAM -->
   <exec_depend>cartographer_ros</exec_depend>
@@ -42,8 +42,8 @@
   <exec_depend>nav2_lifecycle_manager</exec_depend>
 
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <!--test_depend>ament_lint_auto</test_depend-->
+  <!--test_depend>ament_lint_common</test_depend-->
 
   <export>
     <build_type>ament_cmake</build_type>
