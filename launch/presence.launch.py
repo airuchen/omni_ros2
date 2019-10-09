@@ -23,7 +23,7 @@ def generate_launch_description():
         node_executable='se_node',
         output='screen',
         parameters=[presence_config],
-        remappings=[('odometry/filtered', 'base_odom')]     # remapping filtered odom to base_odom
+        remappings=[('odometry/filtered', 'odom')]     # remapping filtered odom to odom
         ),
     ])
     
