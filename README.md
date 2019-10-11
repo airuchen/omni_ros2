@@ -25,7 +25,7 @@ Create ros2_ws and download needed repos into src.
 ```
 source /opt/ros/dashing/setup.bash
 mkdir -p ~/ros2_ws/src && cd ~/ros2_ws
-wget https://gist.githubusercontent.com/airuchen/6afb66a65947474405a8cbeb3aba7ecf/raw/60c32df7191200381d839d269ef68fccea994af1/omni_ros2.repos
+wget https://gist.githubusercontent.com/airuchen/6afb66a65947474405a8cbeb3aba7ecf/raw/ee6afb566fb0e189ddb24ea4ef5815e2afe507e5/omni_ros2.repos
 vcs import src < omni_ros2.repos
 ```
 
