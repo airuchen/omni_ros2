@@ -1,6 +1,6 @@
 # omni_ros2
 
-We are stil trying to transplant moni_base_driver from ROS1 to ROS2. Therefore,  an omni_base_driver on ROS1 is needed currently. At this point, we are able to run lidar, SLAM, and navigation purely on ROS2.
+We are still trying to transplant moni_base_driver from ROS1 to ROS2. Therefore,  an omni_base_driver on ROS1 is needed currently. At this point, we are able to run lidar, SLAM, and navigation purely on ROS2.
 
 ## Installation
 
