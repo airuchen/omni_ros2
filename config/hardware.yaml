@@ -1,3 +1,7 @@
+robot_state_publisher:
+        ros__parameters:
+                use_tf_static: true
+# 		publish_frequency: 30.0
 ydlidar_node:
         ros__parameters:
                 angle_fixed: true
@@ -14,7 +18,4 @@ ydlidar_node:
                 port: /dev/ydlidar
                 frame_id: laser_frame
 
-robot_state_publisher:
-        ros__parameters:
-                use_tf_static: true
 
