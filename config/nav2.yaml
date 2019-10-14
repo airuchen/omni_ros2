@@ -1,6 +1,6 @@
 amcl:
   ros__parameters:
-    use_sim_time: False
+    use_sim_time: false
     alpha1: 0.08
     alpha2: 0.08 # 0.15
     alpha3: 0.08
@@ -16,7 +16,7 @@ amcl:
     laser_likelihood_max_dist: 2.0
     laser_max_range: 50.0 # c
     laser_min_range: -1.0
-    laser_model_type: "beam"
+    laser_model_type: "likelihood_field" # "beam"
     max_beams: 200
     max_particles: 3000 # 4000
     min_particles: 500
@@ -59,8 +59,8 @@ dwb_controller:
     min_vel_y: -0.5
     max_vel_x: 0.5
     max_vel_y: 0.5
-    max_vel_theta: 1.0
-    min_speed_xy: -1.0
+    max_vel_theta: 0.6
+    min_speed_xy: -0.5
     max_speed_xy: 0.5
     min_speed_theta: 0.0
     min_x_velocity_threshold: 0.001
@@ -86,7 +86,7 @@ dwb_controller:
     PathAlign.scale: 0.0
     GoalAlign.scale: 0.0
     PathDist.scale:  32.0
-    GoalDist.scale:  20.0
+    GoalDist.scale:  15.0
     RotateToGoal.scale: 32.0
 
 local_costmap:
@@ -174,7 +174,7 @@ navfn_planner:
   ros__parameters:
     use_sim_time: False
     tolerance: 0.0 # 0.0
-    use_astar: True # c
+    use_astar: false # c
 
 navfn_planner_GetCostmap_client:
   ros__parameters:
