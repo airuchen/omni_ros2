@@ -80,7 +80,7 @@ dwb_controller:
     vtheta_samples: 20 # 40 
     sim_time: 0.7
     linear_granularity: 0.05
-    xy_goal_tolerance: 0.25
+    xy_goal_tolerance: 0.15
     transform_tolerance: 0.2
     critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
     BaseObstacle.scale: 0.02
@@ -101,11 +101,12 @@ local_costmap:
       width: 2
       height: 2
       resolution: 0.03
-      robot_radius: 0.15
+      robot_radius: 0.17
       footprint_padding: 0.02
       update_frequency: 5.0
       publish_frequency: 2.0
-      inflation_layer.cost_scaling_factor: 3.5
+      inflation_layer.cost_scaling_factor: 5.0
+      inflation_layer.inflation_radius: 0.5
       obstacle_layer:
         enabled: True
       always_send_full_costmap: True
@@ -115,7 +116,10 @@ local_costmap:
         max_obstacle_height: 2.0
         clearing: True
         marking: True
-        
+        inf_is_valid: True
+        obstacle_range: 2.0
+        raytrace_range: 5.0
+
   local_costmap_client:
     ros__parameters:
       use_sim_time: False
@@ -127,17 +131,14 @@ global_costmap:
   global_costmap:
     ros__parameters:
       use_sim_time: False
-      robot_radius: 0.15
-      inflation_layer.cost_scaling_factor: 0.275
-      # resolution: 0.015
+      robot_radius: 0.17
+      inflation_layer.cost_scaling_factor: 3.55
+      inflation_layer.inflation_radius: 0.3
       obstacle_layer:
         enabled: True
       always_send_full_costmap: True
-      # inflation_layer.cost_scaling_factor: 0.6
       observation_sources: scan
       scan:
-        # sensor_frame: base_laser
-        # data_type: LaserScan
         topic: /scan
         max_obstacle_height: 2.0
         clearing: True
