@@ -4,8 +4,10 @@ import launch.actions
 import launch_ros.actions
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
+    # define configuration file path 
     config = Path(get_package_share_directory('omni_ros2'), 'config')
     nav2_yaml = config / 'nav2.yaml'
     assert nav2_yaml.is_file()
@@ -13,6 +15,8 @@ def generate_launch_description():
     assert bt_xml_path.is_file()
     map_yaml_filename = config / 'map.yaml'
     assert map_yaml_filename.is_file()
+    rviz_config = Path(get_package_share_directory('omni_ros2'), 'config', 'default.rviz').resolve()
+    assert rviz_config.is_file()
 
     stdout_linebuf_envvar = launch.actions.SetEnvironmentVariable(
         'RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
@@ -26,10 +30,11 @@ def generate_launch_description():
             nav2_yaml,
             {
                 'autostart': True,
-                'node_names': ['map_server', 'amcl', 'world_model', 'dwb_controller', 'navfn_planner', 'bt_navigator'],
+                'node_names': ['map_server', 'rviz2', 'amcl', 'world_model', 'dwb_controller', 'navfn_planner', 'bt_navigator', 'teleop_twist_keyboard'],
             }
         ]
     )
+
     start_map_server_cmd = launch_ros.actions.Node(
         # node_name='map_server',
         package='nav2_map_server',
@@ -37,6 +42,15 @@ def generate_launch_description():
         output='screen',
         parameters=[nav2_yaml,{'yaml_filename':str(map_yaml_filename)}]
     )
+
+    start_rviz_cmd = launch_ros.actions.Node(
+            package='rviz2',
+            node_executable='rviz2',
+            node_name='rviz2',
+            arguments=['--display-config', str(rviz_config), '--fixed-frame', 'map'],
+            output='log'
+    )
+
     start_amcl_cmd = launch_ros.actions.Node(
         # node_name='amcl',
         package='nav2_amcl',
@@ -79,20 +93,28 @@ def generate_launch_description():
         output='screen',
         parameters=[nav2_yaml]
     )
+
+    start_teleop_cmd = launch_ros.actions.Node(
+        package='teleop_twist_keyboard',
+        node_executable='teleop_twist_keyboard',
+        output='screen'
+    )
    
     # create the launch description and populate
     ld = launch.LaunchDescription()
-
+    
     # set environment varibales
     ld.add_action(stdout_linebuf_envvar)
 
     ld.add_action(start_lifecycle_manager_cmd)
     ld.add_action(start_map_server_cmd )
+    ld.add_action(start_rviz_cmd)
     ld.add_action(start_amcl_cmd )
     ld.add_action(start_world_model_cmd )
     ld.add_action(start_dwb_cmd )
     ld.add_action(start_planner_cmd )
     ld.add_action(start_navigator_cmd )
     ld.add_action(start_recovery_cmd )
+    ld.add_action(start_teleop_cmd )
 
     return ld
