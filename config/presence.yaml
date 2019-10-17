@@ -3,7 +3,7 @@ se_node:
     # The frequency, in Hz, at which the filter will output a position estimate. Note that the filter will not begin
     # computation until it receives at least one message from one of the inputs. It will then run continuously at the
     # frequency specified here, regardless of whether it receives more measurements. Defaults to 30 if unspecified.
-    frequency: 30.0
+    frequency: 50.0
 
     # The period, in seconds, after which we consider a sensor to have timed out. In this event, we carry out a predict
     # cycle on the EKF without correcting it. This parameter can be thought of as the minimum frequency with which the
@@ -88,7 +88,7 @@ se_node:
     #                false, false, false]
     odom0_config: [true, true, false,
                    false, false, true,
-                   true, true, false, # vx,vy,vz
+                   false, false, false, # vx,vy,vz
                    false, false, false, # vroll,vpitch,vyaw
                    false, false, false]
 
@@ -99,7 +99,7 @@ se_node:
     # [ADVANCED] Large messages in ROS can exhibit strange behavior when they arrive at a high frequency. This is a result
     # of Nagle's algorithm. This option tells the ROS subscriber to use the tcpNoDelay option, which disables Nagle's
     # algorithm.
-    odom0_nodelay: true # 
+    odom0_nodelay: false # 
 
     # [ADVANCED] When measuring one pose variable with two sensors, a situation can arise in which both sensors under-
     # report their covariances. This can lead to the filter rapidly jumping back and forth between each measurement as they
@@ -109,7 +109,7 @@ se_node:
     # data is converted to velocity data by differentiating the absolute pose measurements. These velocities are then
     # integrated as usual. NOTE: this only applies to sensors that provide pose measurements; setting differential to true
     # for twist measurements has no effect.
-    odom0_differential: true # work
+    odom0_differential: false # work
 
     # [ADVANCED] When the node starts, if this parameter is true, then the first measurement is treated as a "zero point"
     # for all future measurements. While you can achieve the same effect with the differential parameter, the key
@@ -123,15 +123,10 @@ se_node:
     # required. Data is specified at the level of pose and twist variables, rather than for each variable in isolation.
     # For messages that have both pose and twist data, the parameter specifies to which part of the message we are applying
     # the thresholds.
-    odom0_pose_rejection_threshold: 5.0 # 100.0
+    odom0_pose_rejection_threshold: 100.0 # 100.0
     odom0_twist_rejection_threshold: 1.0 # 1.0
 
     imu0: imu
-    # imu0_config: [false, false, false,
-    #               false, false, false,
-    #               false, false, false,
-    #               true,  true,  true,
-    #               true,  true,  true]
     imu0_config: [false, false, false,
                   false, false, false,
                   false, false, false,
@@ -139,7 +134,7 @@ se_node:
                   true,  true,  false]
     imu0_nodelay: false
     imu0_differential: false
-    imu0_relative: false
+    imu0_relative: true
     imu0_queue_size: 3
     # imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
     imu0_twist_rejection_threshold: 3.0                #
@@ -161,7 +156,7 @@ se_node:
     # predicition. Note that if an acceleration measurement for the variable in question is available from one of the
     # inputs, the control term will be ignored.
     # Whether or not we use the control input during predicition. Defaults to false.
-    use_control: true # false
+    use_control: false # false
     # Whether the input (assumed to be cmd_vel) is a geometry_msgs/Twist or geometry_msgs/TwistStamped message. Defaults to
     # false.
     stamped_control: true
