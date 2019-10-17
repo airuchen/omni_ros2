@@ -30,7 +30,7 @@ def generate_launch_description():
             nav2_yaml,
             {
                 'autostart': True,
-                'node_names': ['map_server', 'rviz2', 'amcl', 'world_model', 'dwb_controller', 'navfn_planner', 'bt_navigator', 'teleop_twist_keyboard'],
+                'node_names': ['map_server', 'amcl', 'world_model', 'dwb_controller', 'navfn_planner', 'bt_navigator'],
             }
         ]
     )
@@ -43,13 +43,13 @@ def generate_launch_description():
         parameters=[nav2_yaml,{'yaml_filename':str(map_yaml_filename)}]
     )
 
-    start_rviz_cmd = launch_ros.actions.Node(
-            package='rviz2',
-            node_executable='rviz2',
-            node_name='rviz2',
-            arguments=['--display-config', str(rviz_config), '--fixed-frame', 'map'],
-            output='log'
-    )
+    # start_rviz_cmd = launch_ros.actions.Node(
+    #         package='rviz2',
+    #         node_executable='rviz2',
+    #         node_name='rviz2',
+    #         arguments=['--display-config', str(rviz_config), '--fixed-frame', 'map'],
+    #         output='log'
+    # )
 
     start_amcl_cmd = launch_ros.actions.Node(
         # node_name='amcl',
@@ -94,11 +94,12 @@ def generate_launch_description():
         parameters=[nav2_yaml]
     )
 
-    start_teleop_cmd = launch_ros.actions.Node(
-        package='teleop_twist_keyboard',
-        node_executable='teleop_twist_keyboard',
-        output='screen'
-    )
+    # I totally fail
+    # start_teleop_cmd = launch_ros.actions.Node(
+    #     package='teleop_twist_keyboard',
+    #     node_executable='teleop_twist_keyboard',
+    #     output='screen'
+    # )
    
     # create the launch description and populate
     ld = launch.LaunchDescription()
@@ -108,13 +109,11 @@ def generate_launch_description():
 
     ld.add_action(start_lifecycle_manager_cmd)
     ld.add_action(start_map_server_cmd )
-    ld.add_action(start_rviz_cmd)
     ld.add_action(start_amcl_cmd )
     ld.add_action(start_world_model_cmd )
     ld.add_action(start_dwb_cmd )
     ld.add_action(start_planner_cmd )
     ld.add_action(start_navigator_cmd )
     ld.add_action(start_recovery_cmd )
-    ld.add_action(start_teleop_cmd )
 
     return ld
