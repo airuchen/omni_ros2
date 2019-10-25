@@ -14,7 +14,6 @@ def generate_launch_description():
                 '-configuration_directory', get_package_share_directory('omni_ros2') + '/config',
                 '-configuration_basename', 'cartographer.lua'
                 ],
-            remappings=[('imu', 'imu/data')],
             ),
         Node(
             package='cartographer_ros',

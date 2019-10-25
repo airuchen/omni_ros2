@@ -35,7 +35,8 @@ endif()
 install(DIRECTORY
 	launch
 	config
-	urdf
+  urdf
+ 	meshes
 	DESTINATION share/${PROJECT_NAME})
 
 ament_package()

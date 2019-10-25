@@ -5,6 +5,7 @@ from launch import LaunchDescription
 from launch.actions import SetEnvironmentVariable
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
     urdf = Path(get_package_share_directory('omni_ros2'), 'urdf', 'omni.urdf')
     assert urdf.is_file()
@@ -14,13 +15,12 @@ def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'),
         Node(
-            package='ydlidar',
-            node_executable='ydlidar_node',
+            package='rplidar_ros',
+            node_executable='rplidarNode',
             output='screen',
             parameters=[hardware_config],
-            ),
-    
-    
+        ),
+
         Node(
             package='robot_state_publisher',
             node_executable='robot_state_publisher',

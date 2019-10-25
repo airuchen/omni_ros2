@@ -43,14 +43,6 @@ def generate_launch_description():
         parameters=[nav2_yaml,{'yaml_filename':str(map_yaml_filename)}]
     )
 
-    # start_rviz_cmd = launch_ros.actions.Node(
-    #         package='rviz2',
-    #         node_executable='rviz2',
-    #         node_name='rviz2',
-    #         arguments=['--display-config', str(rviz_config), '--fixed-frame', 'map'],
-    #         output='log'
-    # )
-
     start_amcl_cmd = launch_ros.actions.Node(
         # node_name='amcl',
         package='nav2_amcl',
@@ -93,13 +85,6 @@ def generate_launch_description():
         output='screen',
         parameters=[nav2_yaml]
     )
-
-    # I totally fail
-    # start_teleop_cmd = launch_ros.actions.Node(
-    #     package='teleop_twist_keyboard',
-    #     node_executable='teleop_twist_keyboard',
-    #     output='screen'
-    # )
    
     # create the launch description and populate
     ld = launch.LaunchDescription()
