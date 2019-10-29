@@ -1,104 +1,83 @@
-from pathlib import Path
+# Copyright 2019 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-import launch.actions
-import launch_ros.actions
+# Author: Darby Lim
+
+import os
+
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+from launch.actions import SetEnvironmentVariable
 
 def generate_launch_description():
-    # define configuration file path 
-    config = Path(get_package_share_directory('omni_ros2'), 'config')
-    nav2_yaml = config / 'nav2.yaml'
-    assert nav2_yaml.is_file()
-    bt_xml_path = config / 'navigate.xml'
-    assert bt_xml_path.is_file()
-    map_yaml_filename = config / 'map.yaml'
-    assert map_yaml_filename.is_file()
-    rviz_config = Path(get_package_share_directory('omni_ros2'), 'config', 'default.rviz').resolve()
-    assert rviz_config.is_file()
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    map_dir = LaunchConfiguration(
+        'map',
+        default=os.path.join(
+            get_package_share_directory('omni_ros2'),
+            'config',
+            'office.yaml'))
 
-    stdout_linebuf_envvar = launch.actions.SetEnvironmentVariable(
-        'RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
 
-    start_lifecycle_manager_cmd = launch_ros.actions.Node(
-        node_name='lifecycle_manager',
-        package='nav2_lifecycle_manager',
-        node_executable='lifecycle_manager',
-        output='screen',
-        parameters=[
-            nav2_yaml,
-            {
-                'autostart': True,
-                'node_names': ['map_server', 'amcl', 'world_model', 'dwb_controller', 'navfn_planner', 'bt_navigator'],
-            }
-        ]
-    )
+    param_dir = LaunchConfiguration(
+        'params',
+        default=os.path.join(
+            get_package_share_directory('omni_ros2'),
+            'config',
+            'nav2.yaml'))
 
-    start_map_server_cmd = launch_ros.actions.Node(
-        # node_name='map_server',
-        package='nav2_map_server',
-        node_executable='map_server',
-        output='screen',
-        parameters=[nav2_yaml,{'yaml_filename':str(map_yaml_filename)}]
-    )
+    nav2_launch_file_dir = os.path.join(get_package_share_directory('omni_ros2'), 'launch')
 
-    start_amcl_cmd = launch_ros.actions.Node(
-        # node_name='amcl',
-        package='nav2_amcl',
-        node_executable='amcl',
-        output='screen',
-        parameters=[nav2_yaml]
-    )
-    start_world_model_cmd = launch_ros.actions.Node(
-        # node_name='world_model',
-        package='nav2_world_model',
-        node_executable='world_model',
-        output='screen',
-        parameters=[nav2_yaml]
-    )
-    start_dwb_cmd = launch_ros.actions.Node(
-        # node_name='dwb_controller',
-        package='dwb_controller',
-        node_executable='dwb_controller',
-        output='screen',
-        parameters=[nav2_yaml]
-    )
-    start_planner_cmd = launch_ros.actions.Node(
-        # node_name='navfn_planner',
-        package='nav2_navfn_planner',
-        node_executable='navfn_planner',
-        output='screen',
-        parameters=[nav2_yaml]
-    )
-    start_navigator_cmd = launch_ros.actions.Node(
-        # node_name='bt_navigator',
-        package='nav2_bt_navigator',
-        node_executable='bt_navigator',
-        output='screen',
-        parameters=[nav2_yaml, {'bt_xml_filename':str(bt_xml_path)}]
-    )
-    start_recovery_cmd = launch_ros.actions.Node(
-        # node_name='recoveries_node',
-        package='nav2_recoveries',
-        node_executable='recoveries_node',
-        output='screen',
-        parameters=[nav2_yaml]
-    )
-   
-    # create the launch description and populate
-    ld = launch.LaunchDescription()
-    
-    # set environment varibales
-    ld.add_action(stdout_linebuf_envvar)
+    rviz_config_dir = os.path.join(
+        get_package_share_directory('omni_ros2'),
+        'config',
+        'default.rviz')
 
-    ld.add_action(start_lifecycle_manager_cmd)
-    ld.add_action(start_map_server_cmd )
-    ld.add_action(start_amcl_cmd )
-    ld.add_action(start_world_model_cmd )
-    ld.add_action(start_dwb_cmd )
-    ld.add_action(start_planner_cmd )
-    ld.add_action(start_navigator_cmd )
-    ld.add_action(start_recovery_cmd )
+    return LaunchDescription([      
 
-    return ld
+
+        DeclareLaunchArgument(
+            'map',
+            default_value=map_dir,
+            description='Full path to map file to load'),
+
+        DeclareLaunchArgument(
+            'params',
+            default_value=param_dir,
+            description='Full path to param file to load'),
+
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([nav2_launch_file_dir, '/nav2_bringup.launch.py']),
+        ),
+
+        # SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'),
+
+        Node(
+            package='rviz2',
+            node_executable='rviz2',
+            # node_name='rviz2',
+            arguments=['-d', rviz_config_dir],
+            parameters=[{'use_sim_time': use_sim_time}],
+            output='log'),
+    ])

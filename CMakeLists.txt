@@ -36,7 +36,7 @@ install(DIRECTORY
 	launch
 	config
   urdf
- 	meshes
+ 	meshes/apollo
 	DESTINATION share/${PROJECT_NAME})
 
 ament_package()
